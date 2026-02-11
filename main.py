@@ -14,12 +14,22 @@ from datetime import datetime, timedelta
 from email_validator import validate_email, EmailNotValidError
 import phonenumbers
 from phonenumbers.phonenumberutil import NumberParseException
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 
 load_dotenv()
 
 app = Flask(__name__, static_folder='assets', static_url_path='/assets')
 app.secret_key = 'your_secret_key_here'
+
+# --- IP-Based Rate Limiting ---
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
 
 login_attempts = {}  # {email: {'count': int, 'last_attempt': datetime}}
 MAX_ATTEMPTS = 5
@@ -146,6 +156,7 @@ def menu():
         return render_template('menu.html', menu_items=[])
 
 @app.route('/register', methods=['GET', 'POST'])
+@limiter.limit("5 per minute", methods=["POST"])
 def register():
     if request.method == 'POST':
         first_name = request.form['first_name'].strip()
@@ -359,6 +370,7 @@ def _load_cart_from_db(cursor, user_id):
     return cart
 
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("10 per minute", methods=["POST"])
 def login():
     if request.method == 'POST':
         email_input = request.form['email'].strip()
@@ -803,6 +815,11 @@ def delete_user(user_id):
         flash('Error deleting user.', 'danger')
         
     return redirect(url_for('admin'))
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    flash('Too many requests. Please slow down and try again later.', 'danger')
+    return redirect(request.referrer or url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)
