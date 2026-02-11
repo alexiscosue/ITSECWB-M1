@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% set auth_page = True %}  
+
+{% block content %}
+<section class="section auth-section" style="padding-top: 160px;">
+  <div class="container">
+    <div class="register-form" style="max-width: 500px; margin: 0 auto;">
+      <h2 class="headline-1 section-title text-center">Register</h2>
+      
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" id="flash-message">
+              {% if category == 'success' %}
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+              {% else %}
+                <ion-icon name="alert-circle-outline"></ion-icon>
+              {% endif %}
+              <div class="message-content">{{ message }}</div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      
+      <!-- IMPORTANT: enctype added -->
+      <form method="POST" action="{{ url_for('register') }}" enctype="multipart/form-data">
+        
+      <div class="input-wrapper">
+        <label for="first_name" class="label-2">First Name</label>
+        <input type="text" id="first_name" name="first_name" class="input-field" required>
+      </div>
+
+      <div class="input-wrapper">
+        <label for="last_name" class="label-2">Last Name</label>
+        <input type="text" id="last_name" name="last_name" class="input-field" required>
+      </div>
+
+        <div class="input-wrapper">
+          <label for="email" class="label-2">Email</label>
+          <input type="email" id="email" name="email" class="input-field" required>
+        </div>
+
+        <div class="input-wrapper">
+          <label for="phone" class="label-2">Phone Number</label>
+          <div style="display:flex; gap:5px;">
+            <select name="country_code" id="country_code" class="input-field" style="max-width: 100px;">
+              <option value="+63" selected>PH +63</option>
+              <option value="+1">US +1</option>
+              <option value="+44">UK +44</option>
+              <!-- Add more countries as needed -->
+            </select>
+            <input type="tel" id="phone" name="phone" class="input-field" required style="flex:1;">
+          </div>
+        </div>
+
+        <div class="input-wrapper">
+          <label for="profile_photo" class="label-2">Profile Photo</label>
+          <input type="file" id="profile_photo" name="profile_photo" class="input-field" accept="image/*" required>
+        </div>
+
+        <div class="input-wrapper">
+          <label for="password" class="label-2">Password</label>
+          <input type="password" id="password" name="password" class="input-field" required>
+        </div>
+        
+        <div class="input-wrapper">
+          <label for="confirm_password" class="label-2">Confirm Password</label>
+          <input type="password" id="confirm_password" name="confirm_password" class="input-field" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="margin-top: 20px;">
+          <span class="text text-1">Register</span>
+          <span class="text text-2" aria-hidden="true">Register</span>
+        </button>
+      </form>
+      
+      <p class="body-4 text-center" style="margin-top: 20px;">
+        Already have an account? <br>
+        <a href="{{ url_for('login') }}" class="hover-underline-inline">Login here</a>
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

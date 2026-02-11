@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block topbar %}{% endblock %}
+{% block header %}{% endblock %}
+
+{% block content %}
+<section class="section staff-section" aria-label="Staff Panel">
+  <div class="container" style="max-width: 1500px; margin: 0 auto;">
+    <p class="section-subtitle text-center label-2" style="color: #6c757d;">Staff Panel</p>
+    <h2 class="headline-1 section-title text-center" style="margin-bottom: 30px;">Dashboard</h2>
+    <div class="staff-container">
+
+
+      <!-- View Inventory Panel -->
+      <div class="col-12 col-md-4 staff-panel inventory">
+        <p class="section-subtitle text-center label-2" style="color: #6c757d;">View Inventory</p>
+        <div class="panel-content">
+          {% for product in products %}
+          <div class="inventory-item">
+            {% if product.image %}
+              <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}" class="inventory-item-img">
+            {% else %}
+              <div class="inventory-item-placeholder"></div>
+            {% endif %}
+            <div class="inventory-item-details">
+              <div class="inventory-item-name">{{ product.name }}</div>
+              <div class="inventory-item-info">₱{{ '%.2f'|format(product.price) }} &bull; Stock: {{ product.stock_quantity }}{% if not product.is_active %} <em>(Inactive)</em>{% endif %}</div>
+            </div>
+          </div>
+          {% else %}
+          <p class="text-center" style="color: #fcfcfc; margin-top: 20px;">No products found.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+
+      <!-- Manage Orders Panel -->
+      <div class="col-12 col-md-8 staff-panel orders">
+        <p class="section-subtitle text-center label-2" style="color: #6c757d;">Manage Orders</p>
+        <div class="panel-content orders-table-container">
+          <table class="table table-striped orders-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>More Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %}
+              <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.user_name }} ({{ order.user_email }})</td>
+                <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>₱{{ "%.2f"|format(order.total) }}</td>
+                <td class="action-cell">
+                  <div class="action-container">
+                    <form action="{{ url_for('update_order_status', order_id=order.id) }}" method="POST" class="update-form">
+                      <select name="status" class="input-field status-select">
+                        {% set statuses = ['Paid', 'Shipped', 'Cancelled'] %}
+                        {% for s in statuses %}
+                        <option value="{{ s }}" {% if order.status == s %}selected{% endif %}>{{ s }}</option>
+                        {% endfor %}
+                      </select>
+                      <button type="submit" class="btn btn-primary action-btn">
+                        <span class="text text-1">Update</span>
+                        <span class="text text-2" aria-hidden="true">Update</span>
+                      </button>
+                    </form>
+                  </div>
+                </td>
+                <td class="action-cell" style="padding-left: 27px;">
+                    <button class="btn btn-primary view-products-btn action-btn" onclick="toggleProducts('{{ order.id }}')">
+                        <span class="text text-1">View Products</span>
+                        <span class="text text-2" aria-hidden="true">View Products</span>
+                    </button>
+                </td>
+              </tr>
+              <tr id="products-{{ order.id }}" class="products-row">
+                <td colspan="6" class="products-cell">
+                  <h4>Products in Order #{{ order.id }}</h4>
+                  {% if order.products %}
+                  <ul>
+                    {% for item in order.products %}
+                    <li>{{ item.quantity }}x {{ item.name }} - ₱{{ "%.2f"|format(item.price) }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% else %}
+                  <p>No product information available for this order.</p>
+                  {% endif %}
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="6" class="text-center" style="height:60px; vertical-align: middle;">No orders found.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+<script>
+function toggleProducts(orderId) {
+  var productsRow = document.getElementById('products-' + orderId);
+  if (productsRow.style.display === 'none') {
+    productsRow.style.display = 'table-row';
+  } else {
+    productsRow.style.display = 'none';
+  }
+}
+</script>
+{% endblock %}
