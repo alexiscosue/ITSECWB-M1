@@ -16,12 +16,59 @@ import phonenumbers
 from phonenumbers.phonenumberutil import NumberParseException
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-
+import logging
+from logging.handlers import RotatingFileHandler
+from datetime import datetime
+import traceback
 
 load_dotenv()
 
+DEBUG = True
+
 app = Flask(__name__, static_folder='assets', static_url_path='/assets')
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
+app.config['DEBUG'] = DEBUG  # change to False in production
 app.secret_key = 'your_secret_key_here'
+
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SECURE=not DEBUG,  # True in production (HTTPS)
+    SESSION_COOKIE_SAMESITE='Lax'
+)
+
+# --- Logging Setup ---
+LOG_FOLDER = "logs"
+os.makedirs(LOG_FOLDER, exist_ok=True)
+
+log_file = os.path.join(LOG_FOLDER, "app.log")
+
+handler = RotatingFileHandler(
+    log_file,
+    maxBytes=5 * 1024 * 1024,  # 5MB per file
+    backupCount=5              # keep old logs (no overwrite)
+)
+
+formatter = logging.Formatter(
+    '%(asctime)s | %(levelname)s | %(message)s'
+)
+
+handler.setFormatter(formatter)
+handler.setLevel(logging.INFO)
+
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.INFO)
+
+def log_auth(action, email, status, ip):
+    app.logger.info(f"[AUTH] action={action} email={email} status={status} ip={ip}")
+
+def log_transaction(user_id, action, details):
+    app.logger.info(f"[TRANSACTION] user_id={user_id} action={action} details={details}")
+
+def log_admin(admin_id, action, target, details=""):
+    app.logger.warning(f"[ADMIN] admin_id={admin_id} action={action} target={target} details={details}")
+
+def log_session(user_id, action, ip, details=""):
+    app.logger.info(f"[SESSION] user_id={user_id} action={action} ip={ip} details={details}")
 
 # --- IP-Based Rate Limiting ---
 limiter = Limiter(
@@ -139,9 +186,125 @@ def strong_password(password):
             re.search(r"[a-z]", password) and
             re.search(r"[0-9]", password))
 
+@app.before_request
+def session_timeout_handler():
+    # 🚫 Skip static + session-check routes
+    if request.endpoint and (
+        request.endpoint.startswith('static') or
+        request.endpoint in ['session_time_left']
+    ):
+        return
+
+    session.permanent = True
+
+    if 'user_id' not in session:
+        return
+
+    now = datetime.now()
+
+    # --- Idle Timeout ---
+    if 'last_activity' in session:
+        try:
+            last_activity = datetime.fromisoformat(session['last_activity'])
+        except Exception:
+            user_id = session.get('user_id')
+
+            log_session(
+                user_id=user_id,
+                action="ERROR",
+                ip=request.remote_addr,
+                details="invalid last_activity format"
+            )
+
+            session.clear()
+            flash("Session error. Please log in again.", "warning")
+            return redirect(url_for('login'))
+
+        timeout_limit = app.config['PERMANENT_SESSION_LIFETIME']
+
+        if now - last_activity > timeout_limit:
+            user_id = session.get('user_id')
+
+            log_session(
+                user_id=user_id,
+                action="TIMEOUT_IDLE",
+                ip=request.remote_addr,
+                details="idle timeout"
+            )
+
+            session.clear()
+            flash("Session expired due to inactivity.", "warning")
+            return redirect(url_for('login'))
+
+    # --- Absolute Timeout ---
+    if 'login_time' in session:
+        try:
+            login_time = datetime.fromisoformat(session['login_time'])
+        except Exception:
+            user_id = session.get('user_id')
+
+            log_session(
+                user_id=user_id,
+                action="ERROR",
+                ip=request.remote_addr,
+                details="invalid login_time format"
+            )
+
+            session.clear()
+            return redirect(url_for('login'))
+
+        if now - login_time > timedelta(hours=1):
+            user_id = session.get('user_id')
+
+            log_session(
+                user_id=user_id,
+                action="TIMEOUT_ABSOLUTE",
+                ip=request.remote_addr,
+                details="absolute timeout"
+            )
+
+            session.clear()
+            flash("Session expired. Please log in again.", "warning")
+            return redirect(url_for('login'))
+
+    # ✅ Update activity only for valid user actions
+    session['last_activity'] = now.isoformat()
+
+@app.route('/session-time-left')
+def session_time_left():
+    if 'user_id' not in session or 'last_activity' not in session:
+        return jsonify({'remaining': 0, 'logged_in': False})
+
+    last_activity = datetime.fromisoformat(session['last_activity'])
+    timeout = app.config['PERMANENT_SESSION_LIFETIME']
+    remaining = (last_activity + timeout - datetime.now()).total_seconds()
+
+    return jsonify({
+        'remaining': max(0, int(remaining)),
+        'logged_in': True
+    })
+
+@app.route('/keep-alive')
+@login_required
+def keep_alive():
+    session['last_activity'] = datetime.now().isoformat()
+
+    log_session(
+        user_id=session.get('user_id'),
+        action="EXTENDED",
+        ip=request.remote_addr,
+        details="keep-alive ping"
+    )
+
+    return jsonify({'status': 'extended'})
+
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/test-error')
+def test_error():
+    raise Exception("Test generic error handler")
 
 @app.route('/menu')
 def menu():
@@ -232,11 +395,16 @@ def register():
                     VALUES (%s,%s,%s,%s,%s,%s,%s)
                 """, (first_name, last_name, email, country_code, phone, password_hash, filename))
 
+                log_auth("register", email, "SUCCESS", request.remote_addr)
+
                 flash('Registration successful. Please login.', 'success')
                 return redirect(url_for('login'))
 
         except Exception as e:
             print(e)
+
+            log_auth("register", email, "FAILED", request.remote_addr)
+
             flash('Registration failed.', 'danger')
             return render_template('register.html')
 
@@ -275,6 +443,8 @@ def add_to_cart():
             
             # Load the updated cart data
             cart_data = _load_cart_from_db(cursor, user_id)
+
+        log_transaction(user_id, "ADD_TO_CART", f"product_id={product_id}")
 
         return jsonify({
             'success': True,
@@ -329,6 +499,8 @@ def update_cart():
             
             cart_data = _load_cart_from_db(cursor, user_id)
             
+            log_transaction(user_id, "UPDATE_CART", f"{action} product_id={product_id}")
+
             return jsonify({
                 'success': True,
                 'cart': cart_data,
@@ -405,12 +577,22 @@ def login():
                     # Reset attempts on successful login
                     login_attempts[email] = {'count': 0, 'last_attempt': now}
 
+                    # 🔐 Prevent session fixation
+                    session.clear()
+
+                    # ✅ Set fresh session data
                     session['user_id'] = user['id']
                     session['email'] = user['email']
                     session['name'] = f"{user['first_name']} {user['last_name']}"
                     session['role'] = user['role']
 
+                    session['login_time'] = datetime.now().isoformat()  # optional (for absolute timeout)
+
+                    session.permanent = True
+
                     _load_cart_from_db(cursor, user['id'])
+
+                    log_auth("login", email, "SUCCESS", request.remote_addr)
 
                     flash('Logged in successfully.', 'success')
                     return redirect(url_for('home'))
@@ -424,6 +606,7 @@ def login():
                         login_attempts[email]['last_attempt'] = now
 
                     flash('Invalid email or password.', 'danger')
+                    log_auth("login", email, "FAILED", request.remote_addr)
 
         except Exception as e:
             print(f"Login error: {e}")
@@ -433,6 +616,7 @@ def login():
 
 @app.route('/logout')
 def logout():
+    log_auth("logout", session.get('email'), "SUCCESS", request.remote_addr)
     session.clear()
     flash('Logged out successfully.', 'success')
     return redirect(url_for('login'))
@@ -547,6 +731,8 @@ def submit_checkout():
             session.pop('cart', None)
             session.modified = True
 
+            log_transaction(user_id, "CHECKOUT", f"order_id={order_id} total={total}")
+
             flash("Order placed successfully! Your order number is " + str(order_id), "success")
             return redirect(url_for('order_history'))
 
@@ -560,6 +746,8 @@ def submit_checkout():
         return redirect(url_for('checkout'))
         
     except Exception as e:
+        log_transaction(user_id, "CHECKOUT_FAILED", str(e))
+
         print(f"Checkout error: {e}")
         flash(f"Error placing order: {str(e)}", "danger")
         return redirect(url_for('checkout'))
@@ -616,6 +804,9 @@ def add_product():
     try:
         with db_transaction() as (conn, cursor):
             cursor.callproc('add_product', (name, description, price, stock_qty, filename))
+
+            log_admin(session['user_id'], "ADD_PRODUCT", name)
+
             flash('Product added successfully!', 'success')
 
     except mysql.connector.Error as err:
@@ -659,6 +850,9 @@ def edit_product(product_id):
                     "UPDATE products SET name=%s, price=%s, stock_quantity=%s, description=%s, is_active=%s WHERE id=%s",
                     (name, price, stock_qty, description, is_active, product_id)
                 )
+
+            log_admin(session['user_id'], "EDIT_PRODUCT", product_id)
+
             flash('Product updated successfully!', 'success')
 
     except mysql.connector.Error as err:
@@ -694,6 +888,9 @@ def delete_product(product_id):
                 return redirect(url_for('admin'))
             
             cursor.execute("DELETE FROM products WHERE id = %s", (product_id,))
+
+            log_admin(session['user_id'], "DELETE_PRODUCT", product_id)
+
             flash(f'Product "{product["name"]}" deleted successfully!', 'success')
 
     except Exception as e:
@@ -773,6 +970,9 @@ def update_order_status(order_id):
                 "UPDATE orders SET status = %s WHERE id = %s",
                 (new_status, order_id)
             )
+
+            log_admin(session['user_id'], "UPDATE_ORDER_STATUS", order_id, f"status={new_status}")
+
             flash(f'Order #{order_id} status updated to {new_status}.', 'success')
     except Exception as e:
         print(f"Error updating order status: {e}")
@@ -792,6 +992,9 @@ def update_user_role(user_id):
     try:
         with db_transaction() as (conn, cursor):
             cursor.callproc('update_user_role', (user_id, new_role))
+
+            log_admin(session['user_id'], "UPDATE_ROLE", user_id, f"new_role={new_role}")
+
             flash('User role updated successfully.', 'success')
     except Exception as e:
         print(f"Error updating user role: {e}")
@@ -809,6 +1012,9 @@ def delete_user(user_id):
     try:
         with db_transaction() as (conn, cursor):
             cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
+
+            log_admin(session['user_id'], "DELETE_USER", user_id)
+
             flash('User deleted successfully.', 'success')
     except Exception as e:
         print(f"Error deleting user: {e}")
@@ -821,5 +1027,18 @@ def ratelimit_handler(e):
     flash('Too many requests. Please slow down and try again later.', 'danger')
     return redirect(request.referrer or url_for('home'))
 
+@app.errorhandler(Exception)
+def handle_exception(e):
+    if app.config['DEBUG']:
+        # Detailed error (for development)
+        return f"""
+        <h1>Internal Server Error</h1>
+        <pre>{traceback.format_exc()}</pre>
+        """, 500
+    else:
+        # Generic message (for users)
+        app.logger.error(f"Unhandled Exception: {str(e)}")
+        return render_template("error.html", message="Something went wrong. Please try again later."), 500
+    
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=DEBUG)
