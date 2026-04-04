@@ -168,3 +168,40 @@ window.addEventListener("mousemove", function (event) {
   }
 
 });
+
+let warningShown = false;
+
+setInterval(async () => {
+    try {
+        const res = await fetch('/session-time-left');
+        const data = await res.json();
+
+        if (!data.logged_in) return;
+
+        // ⚠️ Show warning
+        if (data.remaining <= 60 && data.remaining > 0 && !warningShown) {
+            warningShown = true;
+
+            const stayLoggedIn = confirm("Your session is about to expire. Stay logged in?");
+
+            if (stayLoggedIn) {
+                await fetch('/keep-alive');
+                warningShown = false; // allow future warnings
+            } else {
+                // ❗ Allow warning to show again if still within range
+                setTimeout(() => {
+                    warningShown = false;
+                }, 15000); // show again after 15s
+            }
+        }
+
+        // ⛔ Force logout when expired
+        if (data.remaining <= 0) {
+            alert("Session expired.");
+            window.location.href = "/login";
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+}, 10000);
