@@ -31,6 +31,7 @@ limiter = Limiter(
     storage_uri="memory://"
 )
 
+
 login_attempts = {}  # {email: {'count': int, 'last_attempt': datetime}}
 MAX_ATTEMPTS = 5
 LOCKOUT_TIME = timedelta(minutes=5)
@@ -822,4 +823,4 @@ def ratelimit_handler(e):
     return redirect(request.referrer or url_for('home'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, ssl_context=('cert.pem', 'key.pem'))
