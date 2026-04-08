@@ -329,7 +329,13 @@ def register():
         country_code = request.form['country_code'].strip()
         phone = request.form['phone'].strip()
         raw_password = request.form['password']
+        confirm_password = request.form.get('confirm_password')
         profile_photo = request.files.get('profile_photo')
+
+        # --- Password Match ---
+        if raw_password != confirm_password:
+            flash('Passwords do not match.', 'danger')
+            return render_template('register.html')
 
         # --- Password Strength ---
         if not strong_password(raw_password):
@@ -852,7 +858,24 @@ def edit_product(product_id):
     image_file = request.files.get('image')
     filename = None
     if image_file and image_file.filename:
-        filename = secure_filename(image_file.filename)
+        if not allowed_file(image_file.filename):
+            flash('Invalid image type.', 'danger')
+            return redirect(url_for('admin', edit=product_id))
+
+        image_file.seek(0, os.SEEK_END)
+        file_size = image_file.tell()
+        image_file.seek(0)
+
+        if file_size > MAX_FILE_SIZE:
+            flash('Image too large (max 2MB).', 'danger')
+            return redirect(url_for('admin', edit=product_id))
+
+        file_type = detect_image_type(image_file.stream)
+        if file_type not in ALLOWED_EXTENSIONS:
+            flash('Invalid image file.', 'danger')
+            return redirect(url_for('admin', edit=product_id))
+
+        filename = f"{uuid.uuid4().hex}.{file_type}"
         save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         image_file.save(save_path)
 
@@ -885,7 +908,7 @@ def edit_product(product_id):
 
     return redirect(url_for('admin'))
 
-@app.route('/delete_product/<int:product_id>')
+@app.route('/delete_product/<int:product_id>', methods=['POST'])
 @admin_required
 def delete_product(product_id):
     try:
