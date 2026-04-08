@@ -1,3 +1,14 @@
-<!-- templates/error.html -->
-<h2>Error</h2>
-<p>{{ message }}</p>
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section" style="padding: 80px 0; text-align: center;">
+  <div class="container">
+    <h2 class="headline-2">Something went wrong</h2>
+    <p class="body-4" style="margin-top: 16px;">{{ message }}</p>
+    <a href="{{ url_for('home') }}" class="btn btn-secondary" style="margin-top: 32px;">
+      <span class="text text-1">Go Home</span>
+      <span class="text text-2" aria-hidden="true">Go Home</span>
+    </a>
+  </div>
+</section>
+{% endblock %}

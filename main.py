@@ -23,12 +23,12 @@ import traceback
 
 load_dotenv()
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 app = Flask(__name__, static_folder='assets', static_url_path='/assets')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
-app.config['DEBUG'] = DEBUG  # change to False in production
-app.secret_key = 'your_secret_key_here'
+app.config['DEBUG'] = DEBUG
+app.secret_key = os.getenv('SECRET_KEY')
 
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
@@ -798,7 +798,24 @@ def add_product():
     image_file = request.files.get('image')
     filename = None
     if image_file and image_file.filename:
-        filename = secure_filename(image_file.filename)
+        if not allowed_file(image_file.filename):
+            flash('Invalid image type.', 'danger')
+            return redirect(url_for('admin'))
+
+        image_file.seek(0, os.SEEK_END)
+        file_size = image_file.tell()
+        image_file.seek(0)
+
+        if file_size > MAX_FILE_SIZE:
+            flash('Image too large (max 2MB).', 'danger')
+            return redirect(url_for('admin'))
+
+        file_type = detect_image_type(image_file.stream)
+        if file_type not in ALLOWED_EXTENSIONS:
+            flash('Invalid image file.', 'danger')
+            return redirect(url_for('admin'))
+
+        filename = f"{uuid.uuid4().hex}.{file_type}"
         save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         image_file.save(save_path)
 
