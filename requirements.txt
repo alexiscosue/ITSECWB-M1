@@ -4,3 +4,5 @@ mysql-connector-python
 email-validator
 phonenumbers
 Flask-Limiter
+gunicorn
+pyopenssl

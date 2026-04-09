@@ -1158,5 +1158,5 @@ def handle_exception(e):
         return render_template("error.html", message="Something went wrong. Please try again later."), 500
     
 if __name__ == '__main__':
-    log_system("STARTUP", f"debug={DEBUG} ssl=True")
-    app.run(debug=DEBUG, host='0.0.0.0', port=5000, ssl_context=('cert.pem', 'key.pem'))
+    log_system("STARTUP", f"debug={DEBUG}")
+    app.run(debug=DEBUG)
