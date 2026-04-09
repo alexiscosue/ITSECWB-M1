@@ -17,7 +17,7 @@ from phonenumbers.phonenumberutil import NumberParseException
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import logging
-from logging.handlers import RotatingFileHandler
+from logging.handlers import RotatingFileHandler, SysLogHandler
 from datetime import datetime
 import traceback
 
@@ -91,6 +91,31 @@ if PAPERTRAIL_ENDPOINT and PAPERTRAIL_TOKEN:
 
 app.logger.setLevel(logging.INFO)
 
+# --- Security Logger (separate security.log) ---
+security_logger = logging.getLogger('security')
+security_logger.setLevel(logging.WARNING)
+
+security_log_file = os.path.join(LOG_FOLDER, "security.log")
+security_handler = RotatingFileHandler(
+    security_log_file,
+    maxBytes=5 * 1024 * 1024,
+    backupCount=5
+)
+security_handler.setFormatter(formatter)
+security_logger.addHandler(security_handler)
+
+# --- Syslog Handler ---
+SYSLOG_HOST = os.getenv('SYSLOG_HOST', '')
+SYSLOG_PORT = int(os.getenv('SYSLOG_PORT', 514))
+
+if SYSLOG_HOST:
+    syslog_handler = SysLogHandler(address=(SYSLOG_HOST, SYSLOG_PORT))
+    syslog_handler.setFormatter(logging.Formatter('%(asctime)s | %(levelname)s | %(message)s'))
+    syslog_handler.setLevel(logging.INFO)
+    app.logger.addHandler(syslog_handler)
+    security_logger.addHandler(syslog_handler)
+    print(f"Syslog handler initialized: {SYSLOG_HOST}:{SYSLOG_PORT}")
+
 def log_auth(action, email, status, ip):
     app.logger.info(f"[AUTH] action={action} email={email} status={status} ip={ip}")
 
@@ -98,13 +123,13 @@ def log_transaction(user_id, action, details):
     app.logger.info(f"[TRANSACTION] user_id={user_id} action={action} details={details}")
 
 def log_admin(admin_id, action, target, details=""):
-    app.logger.warning(f"[ADMIN] admin_id={admin_id} action={action} target={target} details={details}")
+    security_logger.warning(f"[ADMIN] admin_id={admin_id} action={action} target={target} details={details}")
 
 def log_session(user_id, action, ip, details=""):
     app.logger.info(f"[SESSION] user_id={user_id} action={action} ip={ip} details={details}")
 
 def log_security(event, details, ip=""):
-    app.logger.warning(f"[SECURITY] event={event} details={details} ip={ip}")
+    security_logger.warning(f"[SECURITY] event={event} details={details} ip={ip}")
 
 def log_system(event, details=""):
     app.logger.info(f"[SYSTEM] event={event} details={details}")
@@ -327,6 +352,7 @@ def session_timeout_handler():
     session['last_activity'] = now.isoformat()
 
 @app.route('/session-time-left')
+@limiter.exempt
 def session_time_left():
     if 'user_id' not in session or 'last_activity' not in session:
         return jsonify({'remaining': 0, 'logged_in': False})
@@ -1154,10 +1180,11 @@ def handle_exception(e):
         <pre>{traceback.format_exc()}</pre>
         """, 500
     else:
-        # Generic message (for users)
-        app.logger.error(f"Unhandled Exception: {str(e)}")
+        # Generic message (for users), full traceback in log
+        app.logger.exception(f"Unhandled Exception: {str(e)}")
         return render_template("error.html", message="Something went wrong. Please try again later."), 500
     
 if __name__ == '__main__':
     log_system("STARTUP", f"debug={DEBUG}")
     app.run(debug=DEBUG)
+    # app.run(debug=DEBUG, ssl_context=('cert.pem', 'key.pem'))

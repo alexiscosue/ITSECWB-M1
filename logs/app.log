@@ -108,3 +108,16 @@
 2026-04-09 15:50:23,421 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
 2026-04-09 15:51:40,532 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
 2026-04-09 15:51:46,675 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 21:43:16,343 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-09 21:56:05,629 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-09 21:58:16,325 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/favicon.svg ip=127.0.0.1
+2026-04-09 22:38:31,304 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
+2026-04-09 22:39:31,308 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
+2026-04-09 22:40:31,305 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
+2026-04-09 22:41:31,308 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
+2026-04-09 22:42:31,306 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
+2026-04-09 22:43:31,305 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
+2026-04-09 22:44:31,313 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
+2026-04-09 22:45:31,313 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
+2026-04-09 22:46:31,320 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
+2026-04-09 22:47:31,308 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
