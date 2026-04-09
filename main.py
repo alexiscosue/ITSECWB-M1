@@ -135,14 +135,23 @@ os.makedirs(PROFILE_UPLOAD_FOLDER, exist_ok=True)  # make sure folder exists
 
 def get_db_connection():
     try:
-        connection = mysql.connector.connect(
-            host=os.getenv('DB_HOST'),
+        db_host = os.getenv('DB_HOST')
+        use_ssl = db_host and 'localhost' not in db_host and '127.0.0.1' not in db_host
+
+        connect_args = dict(
+            host=db_host,
+            port=int(os.getenv('DB_PORT', 3306)),
             user=os.getenv('DB_USER'),
             password=os.getenv('DB_PASSWORD'),
             database=os.getenv('DB_NAME'),
             autocommit=False,
             charset='utf8mb4'
         )
+
+        if use_ssl:
+            connect_args['ssl_disabled'] = False
+
+        connection = mysql.connector.connect(**connect_args)
         # Force UTF-8 connection
         cursor = connection.cursor()
         cursor.execute("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci")
