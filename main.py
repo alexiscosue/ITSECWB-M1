@@ -56,6 +56,39 @@ handler.setFormatter(formatter)
 handler.setLevel(logging.INFO)
 
 app.logger.addHandler(handler)
+
+# --- Papertrail HTTPS Log Handler ---
+import urllib.request
+
+PAPERTRAIL_ENDPOINT = os.getenv('PAPERTRAIL_ENDPOINT', '')
+PAPERTRAIL_TOKEN = os.getenv('PAPERTRAIL_TOKEN', '')
+
+class PapertrailHTTPSHandler(logging.Handler):
+    def emit(self, record):
+        if not PAPERTRAIL_ENDPOINT or not PAPERTRAIL_TOKEN:
+            return
+        try:
+            msg = self.format(record).encode('utf-8')
+            req = urllib.request.Request(
+                PAPERTRAIL_ENDPOINT,
+                data=msg,
+                headers={
+                    'Content-Type': 'application/octet-stream',
+                    'Authorization': f'Bearer {PAPERTRAIL_TOKEN}'
+                },
+                method='POST'
+            )
+            urllib.request.urlopen(req, timeout=3)
+        except Exception:
+            pass
+
+if PAPERTRAIL_ENDPOINT and PAPERTRAIL_TOKEN:
+    pt_handler = PapertrailHTTPSHandler()
+    pt_handler.setFormatter(logging.Formatter('%(asctime)s | %(levelname)s | %(message)s'))
+    pt_handler.setLevel(logging.INFO)
+    app.logger.addHandler(pt_handler)
+    print("Papertrail HTTPS handler initialized.")
+
 app.logger.setLevel(logging.INFO)
 
 def log_auth(action, email, status, ip):
@@ -1101,6 +1134,9 @@ def ratelimit_handler(e):
 
 @app.errorhandler(Exception)
 def handle_exception(e):
+    from werkzeug.exceptions import HTTPException
+    if isinstance(e, HTTPException):
+        return e
     if app.config['DEBUG']:
         # Detailed error (for development)
         return f"""

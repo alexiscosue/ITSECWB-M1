@@ -1,5 +1,30 @@
 2026-04-09 00:20:27,052 | ERROR | Unhandled Exception: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
 2026-04-09 13:34:10,501 | ERROR | Unhandled Exception: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-04-09 14:11:58,604 | ERROR | Unhandled Exception: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-04-09 14:11:59,473 | ERROR | Unhandled Exception: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-04-09 14:12:12,821 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 14:12:12,973 | ERROR | Unhandled Exception: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-04-09 14:14:30,696 | INFO | [SESSION] user_id=1 action=TIMEOUT_IDLE ip=127.0.0.1 details=idle timeout
+2026-04-09 14:16:38,070 | ERROR | Unhandled Exception: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-04-09 14:16:43,519 | ERROR | Unhandled Exception: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-04-09 14:16:54,945 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 14:16:55,088 | ERROR | Unhandled Exception: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-04-09 14:18:47,777 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 14:18:51,459 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/favicon.svg ip=127.0.0.1
+2026-04-09 14:19:59,502 | INFO | [SESSION] user_id=1 action=TIMEOUT_IDLE ip=127.0.0.1 details=idle timeout
+2026-04-09 14:19:59,524 | INFO | [SESSION] user_id=1 action=TIMEOUT_IDLE ip=127.0.0.1 details=idle timeout
+2026-04-09 14:20:57,064 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 14:21:57,711 | INFO | [SESSION] user_id=1 action=TIMEOUT_IDLE ip=127.0.0.1 details=idle timeout
+2026-04-09 14:29:26,249 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 14:30:34,071 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 14:32:47,208 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 14:33:47,714 | INFO | [SESSION] user_id=1 action=TIMEOUT_IDLE ip=127.0.0.1 details=idle timeout
+2026-04-09 14:34:01,757 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 14:34:29,861 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 14:35:30,722 | INFO | [SESSION] user_id=1 action=TIMEOUT_IDLE ip=127.0.0.1 details=idle timeout
+2026-04-09 14:36:53,178 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 14:37:53,743 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 14:38:54,709 | INFO | [SESSION] user_id=1 action=TIMEOUT_IDLE ip=127.0.0.1 details=idle timeout
 2026-04-09 14:39:42,328 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
 2026-04-09 14:41:19,673 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
 2026-04-09 14:56:21,852 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
