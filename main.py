@@ -70,6 +70,12 @@ def log_admin(admin_id, action, target, details=""):
 def log_session(user_id, action, ip, details=""):
     app.logger.info(f"[SESSION] user_id={user_id} action={action} ip={ip} details={details}")
 
+def log_security(event, details, ip=""):
+    app.logger.warning(f"[SECURITY] event={event} details={details} ip={ip}")
+
+def log_system(event, details=""):
+    app.logger.info(f"[SYSTEM] event={event} details={details}")
+
 # --- IP-Based Rate Limiting ---
 limiter = Limiter(
     get_remote_address,
@@ -106,6 +112,7 @@ def get_db_connection():
         return connection
     except Error as e:
         print("MySQL connection error:", e)
+        log_system("DB_CONNECTION_FAILED", str(e))
         return None
 
 @contextmanager
@@ -368,6 +375,7 @@ def register():
         filename = None
         if profile_photo and profile_photo.filename:
             if not allowed_file(profile_photo.filename):
+                log_security("INVALID_FILE_UPLOAD", f"filename={profile_photo.filename} route=register email={email}", ip=request.remote_addr)
                 flash('Invalid image type.', 'danger')
                 return render_template('register.html')
 
@@ -376,11 +384,13 @@ def register():
             profile_photo.seek(0)
 
             if file_size > MAX_FILE_SIZE:
+                log_security("FILE_TOO_LARGE", f"size={file_size} route=register email={email}", ip=request.remote_addr)
                 flash('File too large (max 2MB).', 'danger')
                 return render_template('register.html')
 
             file_type = detect_image_type(profile_photo.stream)
             if file_type not in ALLOWED_EXTENSIONS:
+                log_security("INVALID_FILE_MAGIC", f"detected_type={file_type} route=register email={email}", ip=request.remote_addr)
                 flash('Invalid image file.', 'danger')
                 return render_template('register.html')
 
@@ -708,9 +718,11 @@ def submit_checkout():
                 product = cursor.fetchone()
                 
                 if not product:
+                    log_transaction(user_id, "CHECKOUT_UNAVAILABLE_PRODUCT", f"product={item['name']}")
                     raise Exception(f"Product {item['name']} is no longer available")
-                
+
                 if product['stock_quantity'] < item['quantity']:
+                    log_transaction(user_id, "CHECKOUT_INSUFFICIENT_STOCK", f"product={item['name']} available={product['stock_quantity']} requested={item['quantity']}")
                     raise Exception(f"Insufficient stock for {item['name']}. Available: {product['stock_quantity']}, Requested: {item['quantity']}")
 
             # Step 2: Create order and get the new order_id
@@ -805,6 +817,7 @@ def add_product():
     filename = None
     if image_file and image_file.filename:
         if not allowed_file(image_file.filename):
+            log_security("INVALID_FILE_UPLOAD", f"filename={image_file.filename} route=add_product", ip=request.remote_addr)
             flash('Invalid image type.', 'danger')
             return redirect(url_for('admin'))
 
@@ -813,11 +826,13 @@ def add_product():
         image_file.seek(0)
 
         if file_size > MAX_FILE_SIZE:
+            log_security("FILE_TOO_LARGE", f"size={file_size} route=add_product", ip=request.remote_addr)
             flash('Image too large (max 2MB).', 'danger')
             return redirect(url_for('admin'))
 
         file_type = detect_image_type(image_file.stream)
         if file_type not in ALLOWED_EXTENSIONS:
+            log_security("INVALID_FILE_MAGIC", f"detected_type={file_type} route=add_product", ip=request.remote_addr)
             flash('Invalid image file.', 'danger')
             return redirect(url_for('admin'))
 
@@ -859,6 +874,7 @@ def edit_product(product_id):
     filename = None
     if image_file and image_file.filename:
         if not allowed_file(image_file.filename):
+            log_security("INVALID_FILE_UPLOAD", f"filename={image_file.filename} route=edit_product product_id={product_id}", ip=request.remote_addr)
             flash('Invalid image type.', 'danger')
             return redirect(url_for('admin', edit=product_id))
 
@@ -867,11 +883,13 @@ def edit_product(product_id):
         image_file.seek(0)
 
         if file_size > MAX_FILE_SIZE:
+            log_security("FILE_TOO_LARGE", f"size={file_size} route=edit_product product_id={product_id}", ip=request.remote_addr)
             flash('Image too large (max 2MB).', 'danger')
             return redirect(url_for('admin', edit=product_id))
 
         file_type = detect_image_type(image_file.stream)
         if file_type not in ALLOWED_EXTENSIONS:
+            log_security("INVALID_FILE_MAGIC", f"detected_type={file_type} route=edit_product product_id={product_id}", ip=request.remote_addr)
             flash('Invalid image file.', 'danger')
             return redirect(url_for('admin', edit=product_id))
 
@@ -1047,6 +1065,7 @@ def update_user_role(user_id):
 @admin_required
 def delete_user(user_id):
     if user_id == session.get('user_id'):
+        log_security("SELF_DELETE_ATTEMPT", f"admin_id={session.get('user_id')}", ip=request.remote_addr)
         flash("You cannot delete your own account.", 'danger')
         return redirect(url_for('admin'))
         
@@ -1063,8 +1082,14 @@ def delete_user(user_id):
         
     return redirect(url_for('admin'))
 
+@app.errorhandler(404)
+def not_found(e):
+    log_security("404_NOT_FOUND", f"path={request.path}", ip=request.remote_addr)
+    return render_template("error.html", message="Page not found."), 404
+
 @app.errorhandler(429)
 def ratelimit_handler(e):
+    log_security("RATE_LIMIT_HIT", f"endpoint={request.endpoint}", ip=request.remote_addr)
     flash('Too many requests. Please slow down and try again later.', 'danger')
     return redirect(request.referrer or url_for('home'))
 
@@ -1082,4 +1107,5 @@ def handle_exception(e):
         return render_template("error.html", message="Something went wrong. Please try again later."), 500
     
 if __name__ == '__main__':
+    log_system("STARTUP", f"debug={DEBUG} ssl=True")
     app.run(debug=DEBUG, ssl_context=('cert.pem', 'key.pem'))
