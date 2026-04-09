@@ -1095,6 +1095,9 @@ def ratelimit_handler(e):
 
 @app.errorhandler(Exception)
 def handle_exception(e):
+    from werkzeug.exceptions import HTTPException
+    if isinstance(e, HTTPException):
+        return e
     if app.config['DEBUG']:
         # Detailed error (for development)
         return f"""
