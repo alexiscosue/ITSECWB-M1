@@ -355,6 +355,7 @@ def keep_alive():
     return jsonify({'status': 'extended'})
 
 @app.route('/')
+@limiter.exempt
 def home():
     return render_template('index.html')
 
