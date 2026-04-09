@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS donut_hole;
 USE donut_hole;
 
 -- Drop existing tables if needed
-DROP TABLE IF EXISTS transactions, order_items, orders, currencies, products, users, user_carts, product_updates, phased_out_products, low_stock_products;
+DROP TABLE IF EXISTS transactions, order_items, orders, currencies, products, users, user_carts, product_updates, phased_out_products, low_stock_products, reviews;
 
 -- USERS
 CREATE TABLE users (
@@ -80,6 +80,21 @@ CREATE TABLE transactions (
     status ENUM('Success', 'Failed') DEFAULT 'Success',
     paid_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (order_id) REFERENCES orders(id)
+);
+
+-- REVIEWS
+CREATE TABLE reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    review_text TEXT NOT NULL,
+    price_paid DECIMAL(10,2) NOT NULL CHECK (price_paid > 0),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    UNIQUE(user_id, product_id) -- One review per user per product
 );
 
 INSERT INTO products (name, price, stock_quantity, description, image) VALUES
@@ -201,8 +216,8 @@ FOR EACH ROW
 BEGIN
 	INSERT INTO product_updates (id, name, price, stock_quantity, description, image)
     VALUES (NEW.id, NEW.name, NEW.price, NEW.stock_quantity, NEW.description, NEW.image);
-END
-// DELIMITER ;
+END //
+DELIMITER ;
 
 -- 2. Product Deletion Archive
 CREATE TABLE phased_out_products(
@@ -222,8 +237,8 @@ FOR EACH ROW
 BEGIN
 	INSERT INTO phased_out_products (id, name, price, description, image)
     VALUES (OLD.id, OLD.name, OLD.price, OLD.description, OLD.image);
-END
-// DELIMITER ;
+END //
+DELIMITER ;
 
 -- 3. Prevent Negative Stock
 DELIMITER //
@@ -235,8 +250,8 @@ BEGIN
     SIGNAL SQLSTATE '45000'
     SET MESSAGE_TEXT = 'Stock is lesser than indicated quantity';
     END IF;
-END
-// DELIMITER ;
+END //
+DELIMITER ;
 
 -- 4. No negative stock when publishing new product
 DELIMITER //
@@ -248,8 +263,8 @@ BEGIN
     SIGNAL SQLSTATE '45000'
     SET MESSAGE_TEXT = 'Indicated Stock is less than 0';
     END IF;
-END
-// DELIMITER ;
+END //
+DELIMITER ;
 
 -- 5. Low Stock Product Log
 CREATE TABLE low_stock_products(
@@ -269,8 +284,8 @@ BEGIN
     INSERT INTO low_stock_products (id, name, stock_quantity)
     VALUES (NEW.id, NEW.name, NEW.stock_quantity);
     END IF;
-END
-// DELIMITER ;
+END //
+DELIMITER ;
 
 -- 6. Return Stock on Cancellation
 DELIMITER //
@@ -284,8 +299,8 @@ BEGIN
         SET p.stock_quantity = p.stock_quantity + oi.quantity
         WHERE oi.order_id = NEW.id;
     END IF;
-END;
-// DELIMITER ;
+END //
+DELIMITER ;
 
 -- ROLE-BASED ACCESS CONTROL --
 

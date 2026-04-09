@@ -1,2 +1,85 @@
 2026-04-09 00:20:27,052 | ERROR | Unhandled Exception: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
 2026-04-09 13:34:10,501 | ERROR | Unhandled Exception: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-04-09 14:39:42,328 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 14:41:19,673 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 14:56:21,852 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-09 14:56:22,351 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-09 14:56:22,740 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-09 14:56:46,299 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-09 14:56:46,447 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-09 14:56:46,510 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-09 14:58:41,127 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 14:58:54,524 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/favicon.svg ip=127.0.0.1
+2026-04-09 15:04:28,203 | INFO | [SYSTEM] event=DB_CONNECTION_FAILED details=2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (61)
+2026-04-09 15:04:33,554 | INFO | [SYSTEM] event=DB_CONNECTION_FAILED details=2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (61)
+2026-04-09 15:04:47,750 | INFO | [SYSTEM] event=DB_CONNECTION_FAILED details=2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (61)
+2026-04-09 15:10:37,902 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:10:42,436 | INFO | [SYSTEM] event=DB_CONNECTION_FAILED details=1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-04-09 15:11:02,080 | INFO | [SYSTEM] event=DB_CONNECTION_FAILED details=1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-04-09 15:12:01,448 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:12:06,236 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:13:39,410 | INFO | [AUTH] action=logout email=None status=SUCCESS ip=127.0.0.1
+2026-04-09 15:14:03,469 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:15:25,713 | WARNING | [ADMIN] admin_id=1 action=EDIT_PRODUCT target=6 details=
+2026-04-09 15:15:36,896 | INFO | [TRANSACTION] user_id=1 action=ADD_TO_CART details=product_id=6
+2026-04-09 15:15:39,077 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:39,204 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:39,322 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:39,439 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:39,570 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:39,687 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:39,805 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:39,921 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:40,031 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:40,155 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:40,257 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:40,373 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:40,472 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:40,589 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:41,191 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:41,320 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:41,454 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:41,576 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:41,706 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:41,815 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:41,938 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:42,070 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=6
+2026-04-09 15:15:59,590 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_INSUFFICIENT_STOCK details=product=Bundle of 6 available=20 requested=23
+2026-04-09 15:15:59,591 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_FAILED details=Insufficient stock for Bundle of 6. Available: 20, Requested: 23
+2026-04-09 15:16:17,291 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_INSUFFICIENT_STOCK details=product=Bundle of 6 available=20 requested=23
+2026-04-09 15:16:17,292 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_FAILED details=Insufficient stock for Bundle of 6. Available: 20, Requested: 23
+2026-04-09 15:19:17,019 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:19:33,181 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_INSUFFICIENT_STOCK details=product=Bundle of 6 available=20 requested=23
+2026-04-09 15:19:33,183 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_FAILED details=Insufficient stock for Bundle of 6. Available: 20, Requested: 23
+2026-04-09 15:19:44,540 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:19:49,143 | INFO | [AUTH] action=logout email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:19:51,483 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:20:00,957 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_INSUFFICIENT_STOCK details=product=Bundle of 6 available=20 requested=23
+2026-04-09 15:20:00,959 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_FAILED details=Insufficient stock for Bundle of 6. Available: 20, Requested: 23
+2026-04-09 15:20:29,848 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=decrease product_id=6
+2026-04-09 15:20:29,967 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=decrease product_id=6
+2026-04-09 15:20:30,097 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=decrease product_id=6
+2026-04-09 15:20:38,743 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT details=order_id=1 total=7400.0
+2026-04-09 15:20:55,313 | WARNING | [ADMIN] admin_id=1 action=UPDATE_ORDER_STATUS target=1 details=status=Shipped
+2026-04-09 15:23:21,077 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:27:37,147 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:27:45,764 | INFO | [AUTH] action=logout email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:27:57,099 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:28:07,483 | INFO | [TRANSACTION] user_id=1 action=ADD_TO_CART details=product_id=1
+2026-04-09 15:29:20,057 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:29:35,775 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:31:42,790 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:31:53,905 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:36:51,115 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:36:55,724 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:37:24,790 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:38:50,174 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:38:58,856 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:40:30,505 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:40:33,949 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:46:43,842 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:46:54,426 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:50:14,148 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:50:23,421 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-09 15:51:40,532 | INFO | [SYSTEM] event=STARTUP details=debug=False ssl=True
+2026-04-09 15:51:46,675 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1

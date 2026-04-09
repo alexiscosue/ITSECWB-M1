@@ -107,8 +107,14 @@ def get_db_connection():
             user=os.getenv('DB_USER'),
             password=os.getenv('DB_PASSWORD'),
             database=os.getenv('DB_NAME'),
-            autocommit=False
+            autocommit=False,
+            charset='utf8mb4'
         )
+        # Force UTF-8 connection
+        cursor = connection.cursor()
+        cursor.execute("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci")
+        cursor.execute("SET CHARACTER SET utf8mb4")
+        cursor.close()
         return connection
     except Error as e:
         print("MySQL connection error:", e)
@@ -1108,4 +1114,4 @@ def handle_exception(e):
     
 if __name__ == '__main__':
     log_system("STARTUP", f"debug={DEBUG} ssl=True")
-    app.run(debug=DEBUG, ssl_context=('cert.pem', 'key.pem'))
+    app.run(debug=DEBUG, host='0.0.0.0', port=5000, ssl_context=('cert.pem', 'key.pem'))

@@ -5,16 +5,33 @@
   <div class="container" style="max-width: 700px; margin: 0 auto;">
     <h2 class="headline-1 section-title text-center">Checkout</h2>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}" id="flash-message">
+            {% if category == 'success' %}
+              <ion-icon name="checkmark-circle-outline"></ion-icon>
+            {% else %}
+              <ion-icon name="alert-circle-outline"></ion-icon>
+            {% endif %}
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
     <!-- Currency Selector -->
     <div class="form-group" style="margin-bottom: 1.5rem;">
       <label for="currency">Choose Currency:</label>
       <select id="currency" class="input-field">
         {% for currency in currencies %}
+        {% set symbol_map = {'PHP': 'â±', 'EUR': 'â¬', 'USD': '$'} %}
+        {% set display_symbol = symbol_map.get(currency.code, currency.symbol) %}
         <option value="{{ currency.code }}"
                 data-rate="{{ currency.exchange_rate_to_php }}"
-                data-symbol="{{ currency.symbol }}"
+                data-symbol="{{ display_symbol }}"
                 {% if currency.code == 'PHP' %}selected{% endif %}>
-          {{ currency.code }} ({{ currency.symbol }})
+          {{ currency.code }} ({{ display_symbol }})
         </option>
         {% endfor %}
       </select>
@@ -80,7 +97,15 @@
     function renderSummary() {
       const selectedOption = currencySelector.options[currencySelector.selectedIndex];
       const rate = parseFloat(selectedOption.dataset.rate) || 1;
-      const symbol = selectedOption.dataset.symbol || '₱';
+      const currencyCode = selectedOption.value || 'PHP';
+      
+      // Map currency codes to proper Unicode symbols
+      const symbolMap = {
+        'PHP': '₱',
+        'EUR': '€', 
+        'USD': '$'
+      };
+      const symbol = symbolMap[currencyCode] || '₱';
 
       if (Object.keys(originalCartData).length === 0) {
         summaryContainer.innerHTML = '<h3>Order Summary</h3><p>Your cart is empty.</p>';
