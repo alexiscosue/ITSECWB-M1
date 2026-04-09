@@ -26,7 +26,7 @@ load_dotenv()
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 app = Flask(__name__, static_folder='assets', static_url_path='/assets')
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)
 app.config['DEBUG'] = DEBUG
 app.secret_key = os.getenv('SECRET_KEY')
 
