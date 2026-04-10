@@ -41,3 +41,8 @@
 2026-04-10 11:43:42,940 | WARNING | [SECURITY] event=INVALID_FILE_MAGIC details=detected_type=None route=add_product ip=127.0.0.1
 2026-04-10 11:43:43,515 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/assets/images/1a3a2ddc5b7d4c898d546200aaca43ad.jpeg ip=127.0.0.1
 2026-04-10 11:44:24,964 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/assets/images/1a3a2ddc5b7d4c898d546200aaca43ad.jpeg ip=127.0.0.1
+2026-04-10 13:10:35,642 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/favicon.svg ip=127.0.0.1
+2026-04-10 13:25:13,335 | WARNING | [ADMIN] admin_id=1 action=EDIT_PRODUCT target=6 details=
+2026-04-10 13:26:00,311 | WARNING | [SECURITY] event=INVALID_PRICE_INPUT details=price=-100.00 route=edit_product product_id=6 admin_id=1 ip=127.0.0.1
+2026-04-10 13:26:08,850 | WARNING | [ADMIN] admin_id=1 action=EDIT_PRODUCT target=6 details=
+2026-04-10 13:26:26,889 | WARNING | [SECURITY] event=INVALID_PRICE_INPUT details=price=-100.00 route=edit_product product_id=6 admin_id=1 ip=127.0.0.1

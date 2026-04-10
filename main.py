@@ -272,6 +272,18 @@ def strong_password(password):
             re.search(r"[a-z]", password) and
             re.search(r"[0-9]", password))
 
+def validate_price(price_str):
+    if not price_str or not price_str.strip():
+        return None, 'Price is required.'
+    if not re.match(r'^\d+(\.\d{1,2})?$', price_str.strip()):
+        return None, 'Price must be a valid positive number with at most 2 decimal places (e.g. 12.99).'
+    price = float(price_str.strip())
+    if price <= 0:
+        return None, 'Price must be greater than 0.'
+    if price > 99999.99:
+        return None, 'Price must not exceed 99,999.99.'
+    return price, None
+
 @app.before_request
 def session_timeout_handler():
     # 🚫 Skip static + session-check routes
@@ -917,9 +929,16 @@ def admin():
 @admin_required
 def add_product():
     name = request.form.get('name')
-    price = request.form.get('price')
+    price_input = request.form.get('price')
     stock_qty = request.form.get('stock_quantity', type=int) or 0
     description = request.form.get('description')
+
+    # --- Price Validation ---
+    price, price_error = validate_price(price_input)
+    if price_error:
+        log_security("INVALID_PRICE_INPUT", f"price={price_input} route=add_product admin_id={session.get('user_id')}", ip=request.remote_addr)
+        flash(price_error, 'danger')
+        return redirect(url_for('admin'))
 
     # Handle file upload
     image_file = request.files.get('image')
@@ -951,7 +970,7 @@ def add_product():
 
     try:
         with db_transaction() as (conn, cursor):
-            cursor.callproc('add_product', (name, description, price, stock_qty, filename))
+            cursor.callproc('add_product', (name, description, price, stock_qty, filename))  # price is validated float
 
             log_admin(session['user_id'], "ADD_PRODUCT", name)
 
@@ -973,10 +992,17 @@ def add_product():
 @admin_required
 def edit_product(product_id):
     name = request.form.get('name')
-    price = request.form.get('price')
+    price_input = request.form.get('price')
     stock_qty = request.form.get('stock_quantity', type=int)
     description = request.form.get('description')
     is_active = 1 if request.form.get('is_active') == 'on' else 0
+
+    # --- Price Validation ---
+    price, price_error = validate_price(price_input)
+    if price_error:
+        log_security("INVALID_PRICE_INPUT", f"price={price_input} route=edit_product product_id={product_id} admin_id={session.get('user_id')}", ip=request.remote_addr)
+        flash(price_error, 'danger')
+        return redirect(url_for('admin', edit=product_id))
 
     # Handle optional file upload
     image_file = request.files.get('image')
@@ -1011,12 +1037,12 @@ def edit_product(product_id):
             if filename:
                 cursor.execute(
                     "UPDATE products SET name=%s, price=%s, stock_quantity=%s, description=%s, image=%s, is_active=%s WHERE id=%s",
-                    (name, price, stock_qty, description, filename, is_active, product_id)
+                    (name, price, stock_qty, description, filename, is_active, product_id)  # price is validated float
                 )
             else:
                 cursor.execute(
                     "UPDATE products SET name=%s, price=%s, stock_quantity=%s, description=%s, is_active=%s WHERE id=%s",
-                    (name, price, stock_qty, description, is_active, product_id)
+                    (name, price, stock_qty, description, is_active, product_id)  # price is validated float
                 )
 
             log_admin(session['user_id'], "EDIT_PRODUCT", product_id)
@@ -1034,6 +1060,7 @@ def edit_product(product_id):
         flash("Error updating product.", 'danger')
 
     return redirect(url_for('admin'))
+
 
 @app.route('/delete_product/<int:product_id>', methods=['POST'])
 @admin_required

@@ -180,3 +180,196 @@ Exception: Test generic error handler
 2026-04-10 11:42:57,486 | INFO | [AUTH] action=logout email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
 2026-04-10 11:43:15,934 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
 2026-04-10 11:53:22,221 | INFO | [SYSTEM] event=STARTUP details=debug=True
+2026-04-10 13:08:36,326 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-10 13:08:47,936 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+Traceback (most recent call last):
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 915, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 1291, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+  File "C:\Users\Alexis\ITSECWB-M1\main.py", line 284, in session_timeout_handler
+    session.permanent = True
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 34, in permanent
+    self["_permanent"] = bool(value)
+    ~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 90, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-10 13:08:48,634 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+Traceback (most recent call last):
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 915, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 1291, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+  File "C:\Users\Alexis\ITSECWB-M1\main.py", line 284, in session_timeout_handler
+    session.permanent = True
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 34, in permanent
+    self["_permanent"] = bool(value)
+    ~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 90, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-10 13:09:18,324 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-10 13:09:37,173 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+Traceback (most recent call last):
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 915, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 1291, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+  File "C:\Users\Alexis\ITSECWB-M1\main.py", line 284, in session_timeout_handler
+    session.permanent = True
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 34, in permanent
+    self["_permanent"] = bool(value)
+    ~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 90, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-10 13:09:40,612 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+Traceback (most recent call last):
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 915, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 1291, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+  File "C:\Users\Alexis\ITSECWB-M1\main.py", line 284, in session_timeout_handler
+    session.permanent = True
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 34, in permanent
+    self["_permanent"] = bool(value)
+    ~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 90, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-10 13:09:40,844 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+Traceback (most recent call last):
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 915, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 1291, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+  File "C:\Users\Alexis\ITSECWB-M1\main.py", line 284, in session_timeout_handler
+    session.permanent = True
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 34, in permanent
+    self["_permanent"] = bool(value)
+    ~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 90, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-10 13:10:19,843 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+Traceback (most recent call last):
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 915, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 1291, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+  File "C:\Users\Alexis\ITSECWB-M1\main.py", line 284, in session_timeout_handler
+    session.permanent = True
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 34, in permanent
+    self["_permanent"] = bool(value)
+    ~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 90, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-10 13:10:20,087 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+Traceback (most recent call last):
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 915, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 1291, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+  File "C:\Users\Alexis\ITSECWB-M1\main.py", line 284, in session_timeout_handler
+    session.permanent = True
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 34, in permanent
+    self["_permanent"] = bool(value)
+    ~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 90, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-10 13:10:20,119 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+Traceback (most recent call last):
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 915, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 1291, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+  File "C:\Users\Alexis\ITSECWB-M1\main.py", line 284, in session_timeout_handler
+    session.permanent = True
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 34, in permanent
+    self["_permanent"] = bool(value)
+    ~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 90, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-10 13:10:21,340 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+Traceback (most recent call last):
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 915, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 1291, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+  File "C:\Users\Alexis\ITSECWB-M1\main.py", line 284, in session_timeout_handler
+    session.permanent = True
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 34, in permanent
+    self["_permanent"] = bool(value)
+    ~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 90, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-10 13:10:21,604 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+Traceback (most recent call last):
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 915, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 1291, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+  File "C:\Users\Alexis\ITSECWB-M1\main.py", line 284, in session_timeout_handler
+    session.permanent = True
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 34, in permanent
+    self["_permanent"] = bool(value)
+    ~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 90, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-10 13:10:21,637 | ERROR | Unhandled Exception: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+Traceback (most recent call last):
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 915, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 1291, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+  File "C:\Users\Alexis\ITSECWB-M1\main.py", line 284, in session_timeout_handler
+    session.permanent = True
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 34, in permanent
+    self["_permanent"] = bool(value)
+    ~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Alexis\ITSECWB-M1\venv\Lib\site-packages\flask\sessions.py", line 90, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2026-04-10 13:10:29,264 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-10 13:14:14,899 | INFO | [AUTH] action=login email=donuthole@gmail.com status=FAILED ip=127.0.0.1
+2026-04-10 13:14:28,662 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 13:25:36,583 | INFO | [SYSTEM] event=STARTUP details=debug=False
