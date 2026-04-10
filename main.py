@@ -1219,5 +1219,5 @@ def handle_exception(e):
     
 if __name__ == '__main__':
     log_system("STARTUP", f"debug={DEBUG}")
-    # app.run(debug=DEBUG)
-    app.run(debug=DEBUG, ssl_context=('cert.pem', 'key.pem'))
+    app.run(debug=DEBUG)
+    # app.run(debug=DEBUG, ssl_context=('cert.pem', 'key.pem'))
