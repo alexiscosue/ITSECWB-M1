@@ -85,6 +85,11 @@ class PapertrailHTTPSHandler(logging.Handler):
         except Exception:
             pass
 
+app.logger.setLevel(logging.INFO)
+
+# --- Security Logger (separate security.log) ---
+security_logger = logging.getLogger('security')
+
 if PAPERTRAIL_ENDPOINT and PAPERTRAIL_TOKEN:
     pt_handler = PapertrailHTTPSHandler()
     pt_handler.setFormatter(logging.Formatter('%(asctime)s | %(levelname)s | %(message)s'))
@@ -92,11 +97,6 @@ if PAPERTRAIL_ENDPOINT and PAPERTRAIL_TOKEN:
     app.logger.addHandler(pt_handler)
     security_logger.addHandler(pt_handler)
     print("Papertrail HTTPS handler initialized.")
-
-app.logger.setLevel(logging.INFO)
-
-# --- Security Logger (separate security.log) ---
-security_logger = logging.getLogger('security')
 security_logger.setLevel(logging.WARNING)
 
 security_log_file = os.path.join(LOG_FOLDER, "security.log")

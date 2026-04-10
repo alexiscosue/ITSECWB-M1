@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# Install rsyslog TLS support if not present
-apt-get install -y rsyslog-openssl > /dev/null 2>&1
+# Install rsyslog and TLS support
+apt-get install -y rsyslog rsyslog-openssl > /dev/null 2>&1
 
-# Write SolarWinds rsyslog config
-cat > /etc/rsyslog.d/99-solarwinds.conf << EOF
+# Configure rsyslog for SolarWinds if rsyslog is available
+if command -v rsyslogd > /dev/null 2>&1; then
+    mkdir -p /etc/rsyslog.d
+
+    cat > /etc/rsyslog.d/99-solarwinds.conf << EOF
 \$DefaultNetstreamDriverCAFile /etc/ssl/certs/ca-certificates.crt
 \$ActionSendStreamDriver ossl
 \$ActionSendStreamDriverMode 1
@@ -16,6 +19,10 @@ cat > /etc/rsyslog.d/99-solarwinds.conf << EOF
 *.* @@syslog.collector.ap-01.cloud.solarwinds.com:6514;SWOFormat
 EOF
 
-service rsyslog restart
+    rsyslogd || service rsyslog start || true
+    echo "rsyslog configured and started."
+else
+    echo "rsyslog not available, skipping syslog setup."
+fi
 
 exec gunicorn main:app
