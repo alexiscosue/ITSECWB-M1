@@ -142,7 +142,24 @@
 
           <h2 class="headline-1 section-title text-center">Contact Form</h2>
 
-          <form class="contact-form" style="max-width: 800px; margin: 0 auto;">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" id="flash-message" style="max-width: 800px; margin: 0 auto 20px;">
+                  {% if category == 'success' %}
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  {% else %}
+                    <ion-icon name="alert-circle-outline"></ion-icon>
+                  {% endif %}
+                  <div class="message-content">{{ message }}</div>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+
+          <form class="contact-form" method="POST" action="{{ url_for('contact') }}" style="max-width: 800px; margin: 0 auto;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
             <div class="input-wrapper" style="margin-bottom: 20px;">
               <label for="name" class="label-2">Full Name *</label>
               <input type="text" id="name" name="name" class="input-field" required>

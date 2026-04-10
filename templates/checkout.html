@@ -58,6 +58,7 @@
     <!-- Checkout Form -->
     {% if cart %}
     <form id="checkoutForm" method="POST" action="{{ url_for('submit_checkout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="form-group" style="margin-bottom: 1rem;">
         <label for="name">Full Name</label>
         <input id="name" name="name" class="input-field" required

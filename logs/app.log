@@ -121,3 +121,5 @@
 2026-04-09 22:45:31,313 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
 2026-04-09 22:46:31,320 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
 2026-04-09 22:47:31,308 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
+2026-04-10 07:15:36,625 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-10 07:31:51,680 | INFO | [SYSTEM] event=STARTUP details=debug=False

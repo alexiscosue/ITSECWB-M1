@@ -30,6 +30,9 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)
 app.config['DEBUG'] = DEBUG
 app.secret_key = os.getenv('SECRET_KEY')
 
+from flask_wtf.csrf import CSRFProtect
+csrf = CSRFProtect(app)
+
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SECURE=not DEBUG,  # True in production (HTTPS)
@@ -87,6 +90,7 @@ if PAPERTRAIL_ENDPOINT and PAPERTRAIL_TOKEN:
     pt_handler.setFormatter(logging.Formatter('%(asctime)s | %(levelname)s | %(message)s'))
     pt_handler.setLevel(logging.INFO)
     app.logger.addHandler(pt_handler)
+    security_logger.addHandler(pt_handler)
     print("Papertrail HTTPS handler initialized.")
 
 app.logger.setLevel(logging.INFO)
@@ -505,6 +509,7 @@ def register():
 
 
 @app.route('/add_to_cart', methods=['POST'])
+@csrf.exempt
 @login_required
 def add_to_cart():
     data = request.get_json()
@@ -564,6 +569,7 @@ def cart():
         return render_template('cart.html', cart={}, total=0)
 
 @app.route('/update_cart', methods=['POST'])
+@csrf.exempt
 @login_required
 def update_cart():
     data = request.get_json()
@@ -604,6 +610,7 @@ def update_cart():
         return jsonify({'success': False, 'error': 'Failed to update cart.'}), 500
 
 @app.route('/save-cart-session', methods=['POST'])
+@csrf.exempt
 def save_cart_session():
     session['cart'] = request.get_json().get('cart', [])
     session.modified = True
@@ -735,8 +742,34 @@ def order_history():
         flash('Error loading order history.', 'danger')
         return render_template('order_history.html', orders=[])
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
+    if request.method == 'POST':
+        name    = request.form.get('name', '').strip()
+        email   = request.form.get('email', '').strip()
+        phone   = request.form.get('phone', '').strip()
+        subject = request.form.get('subject', '').strip()
+        message = request.form.get('message', '').strip()
+
+        if not name or not email or not subject or not message:
+            flash('Please fill in all required fields.', 'danger')
+            return render_template('contact.html')
+
+        try:
+            valid = validate_email(email)
+            email = valid.email
+        except EmailNotValidError as e:
+            flash(str(e), 'danger')
+            return render_template('contact.html')
+
+        app.logger.info(
+            f"[CONTACT] name={name} email={email} phone={phone} "
+            f"subject={subject} message_length={len(message)}"
+        )
+
+        flash('Your message has been received! We\'ll get back to you shortly.', 'success')
+        return redirect(url_for('contact'))
+
     return render_template('contact.html')
 
 @app.route('/checkout')
@@ -1186,5 +1219,5 @@ def handle_exception(e):
     
 if __name__ == '__main__':
     log_system("STARTUP", f"debug={DEBUG}")
-    app.run(debug=DEBUG)
-    # app.run(debug=DEBUG, ssl_context=('cert.pem', 'key.pem'))
+    # app.run(debug=DEBUG)
+    app.run(debug=DEBUG, ssl_context=('cert.pem', 'key.pem'))
