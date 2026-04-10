@@ -59,6 +59,7 @@
                 <td class="action-cell">
                   <div class="action-container">
                     <form action="{{ url_for('update_order_status', order_id=order.id) }}" method="POST" class="update-form">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                       <select name="status" class="input-field status-select">
                         {% set statuses = ['Paid', 'Shipped', 'Cancelled'] %}
                         {% for s in statuses %}

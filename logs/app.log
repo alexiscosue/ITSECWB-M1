@@ -123,3 +123,60 @@
 2026-04-09 22:47:31,308 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=session_time_left ip=127.0.0.1
 2026-04-10 07:15:36,625 | INFO | [SYSTEM] event=STARTUP details=debug=False
 2026-04-10 07:31:51,680 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-10 10:23:02,740 | INFO | [AUTH] action=login email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 10:23:44,151 | INFO | [AUTH] action=logout email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 10:24:01,994 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 10:47:48,694 | INFO | [AUTH] action=logout email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 10:47:59,033 | INFO | [AUTH] action=login email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 10:48:26,406 | INFO | [TRANSACTION] user_id=2 action=ADD_TO_CART details=product_id=5
+2026-04-10 10:54:07,826 | INFO | [TRANSACTION] user_id=2 action=UPDATE_CART details=increase product_id=5
+2026-04-10 10:54:09,212 | INFO | [TRANSACTION] user_id=2 action=UPDATE_CART details=increase product_id=5
+2026-04-10 10:56:51,066 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-10 10:57:18,063 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-10 10:57:21,331 | INFO | [AUTH] action=logout email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 10:57:31,891 | INFO | [AUTH] action=login email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 10:58:19,475 | INFO | [AUTH] action=logout email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 10:58:35,739 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:15:13,067 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-10 11:15:27,797 | INFO | [AUTH] action=login email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:19:04,099 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-10 11:21:01,519 | INFO | [TRANSACTION] user_id=2 action=UPDATE_CART details=decrease product_id=5
+2026-04-10 11:21:55,986 | INFO | [AUTH] action=logout email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:22:48,496 | INFO | [AUTH] action=register email=donutsample2@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:23:20,686 | INFO | [AUTH] action=login email=donutsample2@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:23:42,675 | INFO | [TRANSACTION] user_id=3 action=ADD_TO_CART details=product_id=1
+2026-04-10 11:23:45,172 | INFO | [TRANSACTION] user_id=3 action=ADD_TO_CART details=product_id=2
+2026-04-10 11:23:55,108 | INFO | [TRANSACTION] user_id=3 action=CHECKOUT details=order_id=1 total=125.0
+2026-04-10 11:27:06,357 | INFO | [AUTH] action=logout email=donutsample2@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:28:06,471 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:28:57,930 | INFO | [TRANSACTION] user_id=1 action=ADD_TO_CART details=product_id=8
+2026-04-10 11:29:05,978 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_INSUFFICIENT_STOCK details=product=Dubai Chewy Donut available=0 requested=1
+2026-04-10 11:29:06,512 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_FAILED details=Insufficient stock for Dubai Chewy Donut. Available: 0, Requested: 1
+2026-04-10 11:29:27,654 | INFO | [TRANSACTION] user_id=1 action=UPDATE_CART details=increase product_id=8
+2026-04-10 11:29:33,061 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_INSUFFICIENT_STOCK details=product=Dubai Chewy Donut available=1 requested=2
+2026-04-10 11:29:33,610 | INFO | [TRANSACTION] user_id=1 action=CHECKOUT_FAILED details=Insufficient stock for Dubai Chewy Donut. Available: 1, Requested: 2
+2026-04-10 11:30:59,251 | INFO | [AUTH] action=logout email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:31:09,806 | INFO | [AUTH] action=login email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:31:27,608 | INFO | [TRANSACTION] user_id=2 action=CHECKOUT details=order_id=2 total=140.0
+2026-04-10 11:31:43,287 | INFO | [AUTH] action=logout email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:31:52,978 | INFO | [AUTH] action=login email=donutsample2@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:32:11,505 | INFO | [AUTH] action=logout email=donutsample2@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:32:23,057 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:34:17,354 | INFO | [AUTH] action=logout email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:34:29,680 | INFO | [AUTH] action=login email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:39:07,710 | INFO | [SYSTEM] event=STARTUP details=debug=False
+2026-04-10 11:40:00,765 | ERROR | Unhandled Exception: Test generic error handler
+Traceback (most recent call last):
+  File "C:\Users\Axel Acosta\Documents\GitHub\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Axel Acosta\Documents\GitHub\ITSECWB-M1\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Axel Acosta\Documents\GitHub\ITSECWB-M1\main.py", line 395, in test_error
+    raise Exception("Test generic error handler")
+Exception: Test generic error handler
+2026-04-10 11:40:29,755 | INFO | [SYSTEM] event=STARTUP details=debug=True
+2026-04-10 11:40:31,006 | INFO | [SYSTEM] event=STARTUP details=debug=True
+2026-04-10 11:42:57,486 | INFO | [AUTH] action=logout email=donutsample@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:43:15,934 | INFO | [AUTH] action=login email=donuthole@gmail.com status=SUCCESS ip=127.0.0.1
+2026-04-10 11:53:22,221 | INFO | [SYSTEM] event=STARTUP details=debug=True

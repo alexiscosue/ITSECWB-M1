@@ -133,7 +133,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/  /*!50003 TRIGGER `return_stock_on_cancellation` AFTER UPDATE ON `orders` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 /*!50003 TRIGGER `return_stock_on_cancellation` AFTER UPDATE ON `orders` FOR EACH ROW BEGIN
     IF NEW.status = 'Cancelled' AND OLD.status != 'Cancelled' THEN
         UPDATE products p
         JOIN order_items oi ON p.id = oi.product_id
@@ -163,7 +163,7 @@ CREATE TABLE `phased_out_products` (
   `image` varchar(255) DEFAULT NULL,
   `deletion_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`deletion_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,6 +172,7 @@ CREATE TABLE `phased_out_products` (
 
 LOCK TABLES `phased_out_products` WRITE;
 /*!40000 ALTER TABLE `phased_out_products` DISABLE KEYS */;
+INSERT INTO `phased_out_products` VALUES (1,7,'Dubai Chewy Donut',100.00,'A soft and chewy donut filled with rich pistachio cream and topped with golden kataifi strands. Inspired by the viral Dubai chocolate trend.','d445ed88f2f74d20b59a863f69cc73bc.jpeg','2026-04-10 02:59:04');
 /*!40000 ALTER TABLE `phased_out_products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,7 +221,7 @@ CREATE TABLE `products` (
   `image` varchar(255) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,7 +230,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Original Glazed',55.00,20,'A timeless classic with a golden, melt-in-your-mouth glaze that’s perfectly sweet, fluffy.','menu-1.png',1),(2,'Hazelnut Drizzle',70.00,20,'Rich, roasted hazelnut glaze cascading over a delicate donut.','menu-2.png',1),(3,'Creme Brulee',80.00,20,'Luscious, custard-filled delight topped with a caramelized sugar that cracks perfectly with every bite.','menu-3.png',1),(4,'Orange Pistachio',80.00,20,'Zesty orange-infused glaze, topped with crunchy crushed pistachios.','menu-4.png',1),(5,'Fruit Punch Summer',70.00,20,'A celebration of juicy strawberries, blueberries, and raspberries for the summer.','menu-5.png',1),(6,'Bundles',370.00,10,'A sunshine-filled box with 2 classic Glazed + 4 of our hottest summer specialties.','menu-6.png',1);
+INSERT INTO `products` VALUES (1,'Original Glazed',55.00,20,'A timeless classic with a golden, melt-in-your-mouth glaze that’s perfectly sweet, fluffy.','menu-1.png',1),(2,'Hazelnut Drizzle',70.00,20,'Rich, roasted hazelnut glaze cascading over a delicate donut.','menu-2.png',1),(3,'Creme Brulee',80.00,20,'Luscious, custard-filled delight topped with a caramelized sugar that cracks perfectly with every bite.','menu-3.png',1),(4,'Orange Pistachio',80.00,20,'Zesty orange-infused glaze, topped with crunchy crushed pistachios.','menu-4.png',1),(5,'Fruit Punch Summer',70.00,20,'A celebration of juicy strawberries, blueberries, and raspberries for the summer.','menu-5.png',1),(6,'Bundles',370.00,10,'A sunshine-filled box with 2 classic Glazed + 4 of our hottest summer specialties.','menu-6.png',1),(8,'Dubai Chewy Donut',100.00,20,'A soft and chewy donut filled with rich pistachio cream and topped with golden kataifi strands. Inspired by the viral Dubai chocolate trend.','1a3a2ddc5b7d4c898d546200aaca43ad.jpeg',1);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -241,7 +242,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/  /*!50003 TRIGGER `prevent_negative_new_product` BEFORE INSERT ON `products` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 /*!50003 TRIGGER `prevent_negative_new_product` BEFORE INSERT ON `products` FOR EACH ROW BEGIN
 	IF NEW.stock_quantity < 1 THEN
     SIGNAL SQLSTATE '45000'
     SET MESSAGE_TEXT = 'Indicated Stock is less than 0';
@@ -261,7 +262,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/  /*!50003 TRIGGER `prevent_negative_stock` BEFORE UPDATE ON `products` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 /*!50003 TRIGGER `prevent_negative_stock` BEFORE UPDATE ON `products` FOR EACH ROW BEGIN
 	IF NEW.stock_quantity < 0 THEN
     SIGNAL SQLSTATE '45000'
     SET MESSAGE_TEXT = 'Stock is lesser than indicated quantity';
@@ -281,7 +282,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/  /*!50003 TRIGGER `product_update` AFTER UPDATE ON `products` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 /*!50003 TRIGGER `product_update` AFTER UPDATE ON `products` FOR EACH ROW BEGIN
 	INSERT INTO product_updates (id, name, price, stock_quantity, description, image)
     VALUES (NEW.id, NEW.name, NEW.price, NEW.stock_quantity, NEW.description, NEW.image);
 END */;;
@@ -299,7 +300,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/  /*!50003 TRIGGER `low_stock_alerts` AFTER UPDATE ON `products` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 /*!50003 TRIGGER `low_stock_alerts` AFTER UPDATE ON `products` FOR EACH ROW BEGIN
 	IF NEW.stock_quantity <= 3 THEN
     INSERT INTO low_stock_products (id, name, stock_quantity)
     VALUES (NEW.id, NEW.name, NEW.stock_quantity);
@@ -319,7 +320,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/  /*!50003 TRIGGER `deleted_products_archive` BEFORE DELETE ON `products` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 /*!50003 TRIGGER `deleted_products_archive` BEFORE DELETE ON `products` FOR EACH ROW BEGIN
 	INSERT INTO phased_out_products (id, name, price, description, image)
     VALUES (OLD.id, OLD.name, OLD.price, OLD.description, OLD.image);
 END */;;
@@ -375,7 +376,7 @@ CREATE TABLE `user_carts` (
   KEY `product_id` (`product_id`),
   CONSTRAINT `user_carts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `user_carts_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -384,6 +385,7 @@ CREATE TABLE `user_carts` (
 
 LOCK TABLES `user_carts` WRITE;
 /*!40000 ALTER TABLE `user_carts` DISABLE KEYS */;
+INSERT INTO `user_carts` VALUES (1,2,5,3);
 /*!40000 ALTER TABLE `user_carts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -420,6 +422,152 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'Admin','User','donuthole@gmail.com','+63','9000000000','pbkdf2:sha256:1000000$fA4Cvb0oh6AZAVBK$50b7ff83935f06eabd4b70f07da3ff5c4912cfbd455435419036194d8e8cfb95',NULL,'admin','2026-02-12 14:20:32','2026-02-12 14:20:32'),(2,'Donut','Sample','donutsample@gmail.com','+63','9688816606','pbkdf2:sha256:1000000$UGiryvJgBNYX2ahI$3d3c9d7049f47f11319f85d5152a572fc3a6bdce3f748d041014a3aada4ae609','64e24fd4790040a292c96c4150430f3c.png','customer','2026-02-12 14:49:58','2026-02-12 14:49:58');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'donut_hole'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `add_product` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `add_product`(IN pname VARCHAR(255), IN pdesc TEXT, IN pprice DECIMAL(10,2), IN pstock INT, IN p_image VARCHAR(255))
+BEGIN
+    INSERT INTO products (name, description, price, stock_quantity, image, is_active)
+    VALUES (pname, pdesc, pprice, pstock, p_image, TRUE);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `create_order` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `create_order`(
+    IN p_user_id INT, 
+    IN p_total DECIMAL(10,2), 
+    IN p_items JSON
+)
+BEGIN
+    DECLARE p_order_id INT;
+    DECLARE i INT DEFAULT 0;
+    DECLARE item_count INT;
+    DECLARE p_id INT;
+    DECLARE p_qty INT;
+    DECLARE p_price DECIMAL(10, 2);
+
+
+    IF (SELECT COUNT(*) FROM users WHERE id = p_user_id) = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'User does not exist.';
+    END IF;
+
+    INSERT INTO orders (user_id, total, status) VALUES (p_user_id, p_total, 'Paid');
+    SET p_order_id = LAST_INSERT_ID();
+
+    SET item_count = JSON_LENGTH(p_items);
+
+    WHILE i < item_count DO
+        SET p_id = JSON_UNQUOTE(JSON_EXTRACT(p_items, CONCAT('$[', i, '].id')));
+        SET p_qty = JSON_UNQUOTE(JSON_EXTRACT(p_items, CONCAT('$[', i, '].quantity')));
+        SET p_price = JSON_UNQUOTE(JSON_EXTRACT(p_items, CONCAT('$[', i, '].price')));
+
+        INSERT INTO order_items (order_id, product_id, quantity, price)
+        VALUES (p_order_id, p_id, p_qty, p_price);
+
+        UPDATE products SET stock_quantity = stock_quantity - p_qty WHERE id = p_id;
+
+        SET i = i + 1;
+    END WHILE;
+
+    SELECT p_order_id as order_id;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_user_orders` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `get_user_orders`(IN p_user_id INT)
+BEGIN
+    SELECT
+        o.id as order_id,
+        o.total,
+        o.status,
+        o.created_at,
+        t.payment_method,
+        t.status as transaction_status
+    FROM orders o
+    LEFT JOIN transactions t ON o.id = t.order_id
+    WHERE o.user_id = p_user_id
+    ORDER BY o.created_at DESC;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `record_transaction` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `record_transaction`(IN oid INT, IN amt DECIMAL(10,2), IN pmethod VARCHAR(50), IN tstatus ENUM('Success', 'Failed'))
+BEGIN
+    INSERT INTO transactions (order_id, amount, payment_method, status)
+    VALUES (oid, amt, pmethod, tstatus);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_user_role` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `update_user_role`(IN p_user_id INT, IN p_new_role VARCHAR(50))
+BEGIN
+    UPDATE users SET role = p_new_role WHERE id = p_user_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -430,4 +578,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-09 16:28:11
+-- Dump completed on 2026-04-10 11:09:08

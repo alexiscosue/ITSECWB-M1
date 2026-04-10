@@ -35,6 +35,7 @@
                     <td>₱{{ "%.2f"|format(item.price * item.quantity) }}</td>
                     <td>
                         <form action="{{ url_for('update_cart') }}" method="POST" style="display: inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="item_id" value="{{ item.id }}">
                             <input type="hidden" name="action" value="remove">
                             <button type="submit" class="btn btn-danger btn-sm">Remove</button>

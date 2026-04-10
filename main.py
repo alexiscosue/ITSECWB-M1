@@ -34,6 +34,7 @@ from flask_wtf.csrf import CSRFProtect
 csrf = CSRFProtect(app)
 
 app.config.update(
+    JSON_AS_ASCII=False,
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SECURE=not DEBUG,  # True in production (HTTPS)
     SESSION_COOKIE_SAMESITE='Lax'

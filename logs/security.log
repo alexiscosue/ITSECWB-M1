@@ -1,1 +1,43 @@
 2026-04-10 07:15:41,360 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/favicon.svg ip=127.0.0.1
+2026-04-10 10:22:52,918 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/favicon.svg ip=127.0.0.1
+2026-04-10 10:23:44,995 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/favicon.svg ip=127.0.0.1
+2026-04-10 10:34:01,221 | WARNING | [ADMIN] admin_id=1 action=ADD_PRODUCT target=Dubai Chewy Donut details=
+2026-04-10 10:34:01,416 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/favicon.svg ip=127.0.0.1
+2026-04-10 10:59:04,221 | WARNING | [ADMIN] admin_id=1 action=DELETE_PRODUCT target=7 details=
+2026-04-10 11:00:05,494 | WARNING | [ADMIN] admin_id=1 action=ADD_PRODUCT target=Dubai Chewy Donut details=
+2026-04-10 11:28:47,994 | WARNING | [ADMIN] admin_id=1 action=EDIT_PRODUCT target=8 details=
+2026-04-10 11:29:23,655 | WARNING | [ADMIN] admin_id=1 action=EDIT_PRODUCT target=8 details=
+2026-04-10 11:29:50,365 | WARNING | [ADMIN] admin_id=1 action=EDIT_PRODUCT target=8 details=
+2026-04-10 11:30:06,346 | WARNING | [ADMIN] admin_id=1 action=EDIT_PRODUCT target=1 details=
+2026-04-10 11:30:20,598 | WARNING | [ADMIN] admin_id=1 action=EDIT_PRODUCT target=1 details=
+2026-04-10 11:31:45,868 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:31:53,570 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:31:56,408 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:32:12,200 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:32:13,914 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:32:23,705 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:32:27,505 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:32:28,657 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:32:42,250 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:32:46,362 | WARNING | [ADMIN] admin_id=1 action=UPDATE_ROLE target=2 details=new_role=staff
+2026-04-10 11:32:47,004 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:33:40,809 | WARNING | [ADMIN] admin_id=1 action=UPDATE_ROLE target=2 details=new_role=customer
+2026-04-10 11:33:41,609 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:33:54,330 | WARNING | [ADMIN] admin_id=1 action=UPDATE_ROLE target=2 details=new_role=staff
+2026-04-10 11:33:55,017 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:34:18,011 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:34:30,293 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:34:31,272 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:34:34,778 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/favicon.ico ip=127.0.0.1
+2026-04-10 11:34:36,737 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:34:43,249 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:34:58,546 | WARNING | [SECURITY] event=RATE_LIMIT_HIT details=endpoint=cart ip=127.0.0.1
+2026-04-10 11:39:13,371 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/assets/images/1a3a2ddc5b7d4c898d546200aaca43ad.jpeg ip=127.0.0.1
+2026-04-10 11:39:16,175 | WARNING | [ADMIN] admin_id=2 action=UPDATE_ORDER_STATUS target=2 details=status=Shipped
+2026-04-10 11:39:16,754 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/assets/images/1a3a2ddc5b7d4c898d546200aaca43ad.jpeg ip=127.0.0.1
+2026-04-10 11:40:04,455 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/favicon.svg ip=127.0.0.1
+2026-04-10 11:40:31,953 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/favicon.ico ip=127.0.0.1
+2026-04-10 11:43:19,443 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/assets/images/1a3a2ddc5b7d4c898d546200aaca43ad.jpeg ip=127.0.0.1
+2026-04-10 11:43:42,940 | WARNING | [SECURITY] event=INVALID_FILE_MAGIC details=detected_type=None route=add_product ip=127.0.0.1
+2026-04-10 11:43:43,515 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/assets/images/1a3a2ddc5b7d4c898d546200aaca43ad.jpeg ip=127.0.0.1
+2026-04-10 11:44:24,964 | WARNING | [SECURITY] event=404_NOT_FOUND details=path=/assets/images/1a3a2ddc5b7d4c898d546200aaca43ad.jpeg ip=127.0.0.1
